@@ -10,7 +10,7 @@ def create_response(
     data: dict = None, status: int = 200, message: str = ""
 ) -> Tuple[Response, int]:
     """Wraps response in a consistent format throughout the API.
-    
+
     Format inspired by https://medium.com/@shazow/how-i-design-json-api-responses-71900f00f2db
     Modifications included:
     - make success a boolean since there's only 2 values
@@ -54,6 +54,17 @@ def mirror(name):
 @app.route("/shows", methods=['GET'])
 def get_all_shows():
     return create_response({"shows": db.get('shows')})
+
+#Part 2 of the assignment
+# param : id of the show
+# retrieves a single show that has the given id
+@app.route("/shows/<id>", methods=['GET'])
+def get_show(id):
+    if db.getById('shows', int(id)) is None:
+        return create_response(status=404, message="No show with this id exists")
+    return create_response({"shows": db.getById('shows', int(id))})
+
+
 
 @app.route("/shows/<id>", methods=['DELETE'])
 def delete_show(id):
