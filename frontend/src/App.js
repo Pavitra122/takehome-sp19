@@ -10,14 +10,34 @@ class App extends Component {
         {id: 1, name: "Game of Thrones", episodes_seen: 0},
         {id: 2, name: "Naruto", episodes_seen: 220},
         {id: 3, name: "Black Mirror", episodes_seen: 3},
-      ]
+      ],
+      newShowField : null
     }
+  }
+
+  addShow = () =>{
+
+
+    if(this.state.newShowField)
+    {
+      let last = this.state.shows[ this.state.shows.length  - 1]
+      this.state.shows.push( { id: last.id + 1, name: this.state.newShowField, episodes_seen: 0})
+      this.setState({shows: this.state.shows})
+    }
+
+  }
+
+  handleChange(event) {
+    this.setState({newShowField: event.target.value})
   }
 
   render() {
     return (
       <div className="App">
-        <Instructions />
+        <Instructions complete={true}/>
+        <input type="text" name="newShowField" value={this.state.newShowField} onChange={this.handleChange.bind(this)}/>
+        <button onClick= {this.addShow}>Add Show</button>
+
         {this.state.shows.map(x => (
           <Show id={x.id} name={x.name} episodes_seen={x.episodes_seen} />
         ))}
